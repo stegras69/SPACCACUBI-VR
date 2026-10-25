@@ -111,7 +111,7 @@ const env = new THREE.Group(); scene.add(env);
 }
 
 // Supporto sotto l'oggetto: piedistallo luminoso
-const OBJ_POS = new THREE.Vector3(0, 1.4, -1.5);
+const OBJ_POS = new THREE.Vector3(0, 1.4, -1.6);
 const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.34, 0.06, 48), new THREE.MeshLambertMaterial({color:'#3a4680', emissive:'#1c2250'}));
 pedestal.position.set(0, 0.6, OBJ_POS.z); scene.add(pedestal);
 const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.7, 48, 1, true), new THREE.MeshBasicMaterial({color:'#9d8cff', transparent:true, opacity:0.08, side:THREE.DoubleSide, depthWrite:false}));
@@ -158,7 +158,7 @@ const cannons = [];
 for(let i=0;i<SLOTS;i++){
   const g = new THREE.Group();
   const ang = (i-(SLOTS-1)/2) * 0.22;
-  g.position.set(Math.sin(ang)*0.8, 1.0, OBJ_POS.z + 0.5 - Math.cos(ang)*0.02);
+  g.position.set(Math.sin(ang)*0.8, 1.0, OBJ_POS.z + 0.6 - Math.cos(ang)*0.02);
   const base = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.055,0.04,24), new THREE.MeshLambertMaterial({color:'#2c3360'}));
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.035,0.06,6,16), new THREE.MeshLambertMaterial({color:'#555c80', transparent:true, opacity:0.35}));
   body.position.y = 0.07;
