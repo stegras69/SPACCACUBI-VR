@@ -165,7 +165,7 @@ for(let i=0;i<SLOTS;i++){
   cannons.push({g, body, tag, shown:null});
 }
 // Griglia dei blaster: un tavolino davanti a te, leggermente inclinato
-const gridRoot = new THREE.Group(); gridRoot.position.set(0, 0.86, -0.5); gridRoot.rotation.x = -0.55; scene.add(gridRoot);
+const gridRoot = new THREE.Group(); gridRoot.position.set(0, 0.86, -0.5); gridRoot.rotation.x = 0.5; scene.add(gridRoot);
 const gridPlate = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.012, 0.3), new THREE.MeshLambertMaterial({color:'#2c3360'}));
 gridPlate.position.set(0,-0.012,0); gridRoot.add(gridPlate);
 const tiles = [];
