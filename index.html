@@ -80,8 +80,8 @@ renderer.outputEncoding = THREE.sRGBEncoding;
 document.body.prepend(renderer.domElement);
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(65, innerWidth/innerHeight, 0.05, 200);
-camera.position.set(0, 1.55, 0.35);
-camera.lookAt(0, 1.2, -1.3);
+camera.position.set(0, 1.55, 0.2);
+camera.lookAt(0, 1.2, -1.5);
 addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 
 scene.add(new THREE.HemisphereLight(0xffffff, 0x3a3f70, 0.8));
@@ -111,7 +111,7 @@ const env = new THREE.Group(); scene.add(env);
 }
 
 // Supporto sotto l'oggetto: piedistallo luminoso
-const OBJ_POS = new THREE.Vector3(0, 1.38, -1.25);
+const OBJ_POS = new THREE.Vector3(0, 1.4, -1.5);
 const pedestal = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.34, 0.06, 48), new THREE.MeshLambertMaterial({color:'#3a4680', emissive:'#1c2250'}));
 pedestal.position.set(0, 0.6, OBJ_POS.z); scene.add(pedestal);
 const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.26, 0.26, 0.7, 48, 1, true), new THREE.MeshBasicMaterial({color:'#9d8cff', transparent:true, opacity:0.08, side:THREE.DoubleSide, depthWrite:false}));
@@ -135,7 +135,7 @@ const FONT = '"Lilita One", "Arial Rounded MT Bold", system-ui, sans-serif';
 
 /* ================= Interfaccia 3D: titolo, cannoni, griglia, pulsanti ================= */
 const hud = label(0.9, 0.16, 512); hud.position.set(0, 2.08, OBJ_POS.z); scene.add(hud);
-const msgPanel = label(0.8, 0.36, 512); msgPanel.position.set(0, 1.4, -0.85); msgPanel.visible = false; scene.add(msgPanel);
+const msgPanel = label(0.8, 0.36, 512); msgPanel.position.set(0, 1.42, -1.05); msgPanel.visible = false; scene.add(msgPanel);
 
 const buttons = []; // {mesh, action}
 function makeButton(text, w, h, color, action){
@@ -145,10 +145,10 @@ function makeButton(text, w, h, color, action){
   b.userData.action = action; buttons.push(b); return b;
 }
 const btnRestart = makeButton('Ricomincia', 0.2, 0.06, '#5e8cf0', ()=>startLevel(levelIndex));
-btnRestart.position.set(0.36, 0.86, -0.42); btnRestart.rotation.x = -0.9; scene.add(btnRestart);
+btnRestart.position.set(0.36, 0.9, -0.6); btnRestart.rotation.x = -0.9; scene.add(btnRestart);
 const btnNext = makeButton('Avanti', 0.24, 0.08, '#ffd25a', ()=>startLevel((levelIndex+1)%LEVELS.length));
 const btnRetry = makeButton('Riprova', 0.24, 0.08, '#5e8cf0', ()=>startLevel(levelIndex));
-btnNext.position.set(-0.14, 1.27, -0.84); btnRetry.position.set(0.14, 1.27, -0.84);
+btnNext.position.set(-0.14, 1.29, -1.04); btnRetry.position.set(0.14, 1.29, -1.04);
 btnNext.visible = btnRetry.visible = false; scene.add(btnNext, btnRetry);
 
 // Cannoni su un arco tra te e l'oggetto
@@ -156,7 +156,7 @@ const cannons = [];
 for(let i=0;i<SLOTS;i++){
   const g = new THREE.Group();
   const ang = (i-(SLOTS-1)/2) * 0.22;
-  g.position.set(Math.sin(ang)*0.75, 0.95, OBJ_POS.z + 0.62 - Math.cos(ang)*0.02);
+  g.position.set(Math.sin(ang)*0.8, 1.0, OBJ_POS.z + 0.5 - Math.cos(ang)*0.02);
   const base = new THREE.Mesh(new THREE.CylinderGeometry(0.045,0.055,0.04,24), new THREE.MeshLambertMaterial({color:'#2c3360'}));
   const body = new THREE.Mesh(new THREE.CapsuleGeometry(0.035,0.06,6,16), new THREE.MeshLambertMaterial({color:'#555c80', transparent:true, opacity:0.35}));
   body.position.y = 0.07;
@@ -165,7 +165,7 @@ for(let i=0;i<SLOTS;i++){
   cannons.push({g, body, tag, shown:null});
 }
 // Griglia dei blaster: un tavolino davanti a te, leggermente inclinato
-const gridRoot = new THREE.Group(); gridRoot.position.set(0, 0.86, -0.5); gridRoot.rotation.x = 0.5; scene.add(gridRoot);
+const gridRoot = new THREE.Group(); gridRoot.position.set(0, 0.9, -0.68); gridRoot.rotation.x = 0.5; scene.add(gridRoot);
 const gridPlate = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.012, 0.3), new THREE.MeshLambertMaterial({color:'#2c3360'}));
 gridPlate.position.set(0,-0.012,0); gridRoot.add(gridPlate);
 const tiles = [];
@@ -216,7 +216,7 @@ function startLevel(i){
   for(const c of list){ b.minX=Math.min(b.minX,c.x);b.maxX=Math.max(b.maxX,c.x);b.minY=Math.min(b.minY,c.y);b.maxY=Math.max(b.maxY,c.y);b.minZ=Math.min(b.minZ,c.z);b.maxZ=Math.max(b.maxZ,c.z); }
   const center = new THREE.Vector3((b.minX+b.maxX)/2,(b.minY+b.maxY)/2,(b.minZ+b.maxZ)/2);
   const size = Math.max(b.maxX-b.minX, b.maxY-b.minY, b.maxZ-b.minZ) + 1;
-  const unit = 0.62 / size;                       // oggetto largo circa 62 cm
+  const unit = 0.7 / size;                        // oggetto largo circa 70 cm
   objG.scale.setScalar(unit);
   const cubes = new Map(), byColor = {}, meshes = [];
   for(const c of list) (byColor[c.c] ||= []).push(c);
@@ -226,7 +226,7 @@ function startLevel(i){
     mh.instanceMatrix.needsUpdate = true; objG.add(mh); meshes.push(mh);
   }
   S = { cubes, center, unit, bounds:b, meshes, total:list.length, left:list.length, columns:null, slots:new Array(SLOTS).fill(null),
-        shots:[], fx:[], vis:{}, visT:0, loseT:1, over:false, winPending:false, grab:null, radius:0.4 };
+        shots:[], fx:[], vis:{}, visT:0, loseT:1, over:false, winPending:false, grab:null, radius:0.45 };
   S.columns = buildBlasters(cubes, L.sizes);
   objG.quaternion.setFromEuler(new THREE.Euler(0.2, 0.5, 0));
   msgPanel.visible = btnNext.visible = btnRetry.visible = false;
