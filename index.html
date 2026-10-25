@@ -146,6 +146,8 @@ function makeButton(text, w, h, color, action){
 }
 const btnRestart = makeButton('Ricomincia', 0.2, 0.06, '#5e8cf0', ()=>startLevel(levelIndex));
 btnRestart.position.set(0.36, 0.9, -0.6); btnRestart.rotation.x = -0.9; scene.add(btnRestart);
+const btnExit = makeButton('Esci dalla VR', 0.2, 0.06, '#e2464f', ()=>{ const ses = renderer.xr.getSession(); if(ses) ses.end(); });
+btnExit.position.set(-0.36, 0.9, -0.6); btnExit.rotation.x = -0.9; scene.add(btnExit);
 const btnNext = makeButton('Avanti', 0.24, 0.08, '#ffd25a', ()=>startLevel((levelIndex+1)%LEVELS.length));
 const btnRetry = makeButton('Riprova', 0.24, 0.08, '#5e8cf0', ()=>startLevel(levelIndex));
 btnNext.position.set(-0.14, 1.29, -1.04); btnRetry.position.set(0.14, 1.29, -1.04);
